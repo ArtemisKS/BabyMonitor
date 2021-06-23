@@ -10,7 +10,23 @@ import UIKit
 extension UIColor {
 
     class var background: UIColor {
-        return UIColor(red: 22/255.0, green: 14/255.0, blue: 83/255.0, alpha: 1)
+        return UIColor(red: 22, green: 14, blue: 83)
+    }
+
+    class var primary: UIColor {
+        UIColor(rgb: 0x605DFF)
+    }
+
+    class var grayBackground: UIColor {
+        UIColor(rgb: 0xF7F7F7)
+    }
+
+    class var grayText: UIColor {
+        UIColor(rgb: 0xBDBDBD)
+    }
+
+    class var primaryRed: UIColor {
+        UIColor(red: 215, green: 46, blue: 71)
     }
 
     // MARK: - Custom Initializers
@@ -18,15 +34,10 @@ extension UIColor {
     convenience init(red: Int, green: Int, blue: Int, alpha: CGFloat = 1.0) {
         let threshold = 255
 
-        assert(red >= 0 && red <= threshold, "Invalid red component")
-        assert(green >= 0 && green <= threshold, "Invalid green component")
-        assert(blue >= 0 && blue <= threshold, "Invalid blue component")
-        assert(alpha >= 0.0 && alpha <= 1.0, "Invalid alpha component")
-
         self.init(
-            red: CGFloat(red) / CGFloat(threshold),
-            green: CGFloat(green) / CGFloat(threshold),
-            blue: CGFloat(blue) / CGFloat(threshold),
+            red: CGFloat(red % threshold) / CGFloat(threshold),
+            green: CGFloat(green % threshold) / CGFloat(threshold),
+            blue: CGFloat(blue % threshold) / CGFloat(threshold),
             alpha: alpha
         )
     }

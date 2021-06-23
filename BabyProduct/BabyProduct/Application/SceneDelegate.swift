@@ -55,7 +55,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 extension SceneDelegate {
 
     func makeRoot() -> UIViewController {
-        HomeAssembly().makeHome().viewController
+        HomeAssembly(birthdayScreenAssembly: BirthdayScreenAssembly()).makeHome()
     }
 
     func makeWindow(scene: UIWindowScene, root: UIViewController) -> UIWindow {

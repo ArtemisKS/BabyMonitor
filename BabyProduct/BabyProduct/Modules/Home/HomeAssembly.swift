@@ -10,27 +10,31 @@ import UIKit
 
 protocol HomeAssembling {
 
-    func makeHome() -> AssembledModule<HomeInput>
+    func makeHome() -> UIViewController
 }
 
 // MARK: -
 
 final class HomeAssembly {
+
+    private let birthdayScreenAssembly: BirthdayScreenAssembling
+
+    init(birthdayScreenAssembly: BirthdayScreenAssembling) {
+        self.birthdayScreenAssembly = birthdayScreenAssembly
+    }
+
 }
 
 // MARK: - HomeAssembling
 
 extension HomeAssembly: HomeAssembling {
 
-    func makeHome() -> AssembledModule<HomeInput> {
-        let coordinator = HomeCoordinator()
+    func makeHome() -> UIViewController {
+        let coordinator = HomeCoordinator(makeBirthdayScreen: birthdayScreenAssembly.makeBirthdayScreen)
         let controller = HomeController(coordinator: coordinator)
         let viewController = HomeViewController(controller: controller)
         controller.view = viewController
         coordinator.viewController = viewController
-        return .init(
-            viewController: viewController,
-            input: controller
-        )
+        return viewController
     }
 }

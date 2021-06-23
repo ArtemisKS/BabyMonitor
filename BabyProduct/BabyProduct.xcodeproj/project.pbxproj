@@ -21,6 +21,15 @@
 		EDBF75542683A8B900F6C7A7 /* HomeAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF75502683A8B900F6C7A7 /* HomeAssembly.swift */; };
 		EDBF755C2683A95400F6C7A7 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF755B2683A95400F6C7A7 /* BaseViewController.swift */; };
 		EDBF75622683A99F00F6C7A7 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF75612683A99F00F6C7A7 /* UIColor.swift */; };
+		EDBF75742683BC5000F6C7A7 /* ActionButtonShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF75732683BC5000F6C7A7 /* ActionButtonShadow.swift */; };
+		EDBF75812683BDB900F6C7A7 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF75802683BDB900F6C7A7 /* Font.swift */; };
+		EDBF75862683C1AD00F6C7A7 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF75852683C1AD00F6C7A7 /* UIApplication.swift */; };
+		EDBF75962683C9D800F6C7A7 /* BirthdayScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF75922683C9D800F6C7A7 /* BirthdayScreenCoordinator.swift */; };
+		EDBF75972683C9D800F6C7A7 /* BirthdayScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF75932683C9D800F6C7A7 /* BirthdayScreenViewController.swift */; };
+		EDBF75982683C9D800F6C7A7 /* BirthdayScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF75942683C9D800F6C7A7 /* BirthdayScreenController.swift */; };
+		EDBF75992683C9D800F6C7A7 /* BirthdayScreenAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF75952683C9D800F6C7A7 /* BirthdayScreenAssembly.swift */; };
+		EDBF759F2683CB1600F6C7A7 /* ChildData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF759E2683CB1600F6C7A7 /* ChildData.swift */; };
+		EDBF75DA2683D29900F6C7A7 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF75D92683D29900F6C7A7 /* Date.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +70,15 @@
 		EDBF75502683A8B900F6C7A7 /* HomeAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAssembly.swift; sourceTree = "<group>"; };
 		EDBF755B2683A95400F6C7A7 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		EDBF75612683A99F00F6C7A7 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		EDBF75732683BC5000F6C7A7 /* ActionButtonShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonShadow.swift; sourceTree = "<group>"; };
+		EDBF75802683BDB900F6C7A7 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		EDBF75852683C1AD00F6C7A7 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
+		EDBF75922683C9D800F6C7A7 /* BirthdayScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayScreenCoordinator.swift; sourceTree = "<group>"; };
+		EDBF75932683C9D800F6C7A7 /* BirthdayScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayScreenViewController.swift; sourceTree = "<group>"; };
+		EDBF75942683C9D800F6C7A7 /* BirthdayScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayScreenController.swift; sourceTree = "<group>"; };
+		EDBF75952683C9D800F6C7A7 /* BirthdayScreenAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayScreenAssembly.swift; sourceTree = "<group>"; };
+		EDBF759E2683CB1600F6C7A7 /* ChildData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildData.swift; sourceTree = "<group>"; };
+		EDBF75D92683D29900F6C7A7 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,10 +129,11 @@
 		EDBF74FC26839EF900F6C7A7 /* BabyProduct */ = {
 			isa = PBXGroup;
 			children = (
+				EDBF759D2683CB0500F6C7A7 /* Models */,
+				EDBF75902683C99B00F6C7A7 /* Modules */,
 				EDBF756C2683B0F600F6C7A7 /* Application */,
 				EDBF75412683A2E400F6C7A7 /* Common */,
 				EDBF75602683A97700F6C7A7 /* Extensions */,
-				EDBF75462683A40D00F6C7A7 /* Home */,
 				EDBF75422683A2ED00F6C7A7 /* Resources */,
 			);
 			path = BabyProduct;
@@ -143,6 +162,7 @@
 			children = (
 				EDBF75372683A28200F6C7A7 /* AutolayoutDSL.swift */,
 				EDBF75382683A28200F6C7A7 /* AssembledModule.swift */,
+				EDBF75802683BDB900F6C7A7 /* Font.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -150,8 +170,8 @@
 		EDBF75412683A2E400F6C7A7 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				EDBF75722683BC3D00F6C7A7 /* UI */,
 				EDBF75362683A28200F6C7A7 /* Utils */,
-				EDBF755B2683A95400F6C7A7 /* BaseViewController.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -181,6 +201,8 @@
 			isa = PBXGroup;
 			children = (
 				EDBF75612683A99F00F6C7A7 /* UIColor.swift */,
+				EDBF75852683C1AD00F6C7A7 /* UIApplication.swift */,
+				EDBF75D92683D29900F6C7A7 /* Date.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -192,6 +214,43 @@
 				EDBF74FF26839EF900F6C7A7 /* SceneDelegate.swift */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		EDBF75722683BC3D00F6C7A7 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				EDBF755B2683A95400F6C7A7 /* BaseViewController.swift */,
+				EDBF75732683BC5000F6C7A7 /* ActionButtonShadow.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		EDBF75902683C99B00F6C7A7 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				EDBF75912683C9AA00F6C7A7 /* BirthdayScreen */,
+				EDBF75462683A40D00F6C7A7 /* Home */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		EDBF75912683C9AA00F6C7A7 /* BirthdayScreen */ = {
+			isa = PBXGroup;
+			children = (
+				EDBF75922683C9D800F6C7A7 /* BirthdayScreenCoordinator.swift */,
+				EDBF75932683C9D800F6C7A7 /* BirthdayScreenViewController.swift */,
+				EDBF75942683C9D800F6C7A7 /* BirthdayScreenController.swift */,
+				EDBF75952683C9D800F6C7A7 /* BirthdayScreenAssembly.swift */,
+			);
+			path = BirthdayScreen;
+			sourceTree = "<group>";
+		};
+		EDBF759D2683CB0500F6C7A7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EDBF759E2683CB1600F6C7A7 /* ChildData.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -323,16 +382,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDBF75972683C9D800F6C7A7 /* BirthdayScreenViewController.swift in Sources */,
+				EDBF75742683BC5000F6C7A7 /* ActionButtonShadow.swift in Sources */,
 				EDBF75542683A8B900F6C7A7 /* HomeAssembly.swift in Sources */,
 				EDBF75392683A28200F6C7A7 /* AutolayoutDSL.swift in Sources */,
+				EDBF759F2683CB1600F6C7A7 /* ChildData.swift in Sources */,
+				EDBF75982683C9D800F6C7A7 /* BirthdayScreenController.swift in Sources */,
 				EDBF753A2683A28200F6C7A7 /* AssembledModule.swift in Sources */,
 				EDBF74FE26839EF900F6C7A7 /* AppDelegate.swift in Sources */,
 				EDBF75532683A8B900F6C7A7 /* HomeController.swift in Sources */,
 				EDBF755C2683A95400F6C7A7 /* BaseViewController.swift in Sources */,
+				EDBF75812683BDB900F6C7A7 /* Font.swift in Sources */,
+				EDBF75862683C1AD00F6C7A7 /* UIApplication.swift in Sources */,
+				EDBF75962683C9D800F6C7A7 /* BirthdayScreenCoordinator.swift in Sources */,
 				EDBF750026839EF900F6C7A7 /* SceneDelegate.swift in Sources */,
 				EDBF75522683A8B900F6C7A7 /* HomeViewController.swift in Sources */,
 				EDBF75512683A8B900F6C7A7 /* HomeCoordinator.swift in Sources */,
+				EDBF75DA2683D29900F6C7A7 /* Date.swift in Sources */,
 				EDBF75622683A99F00F6C7A7 /* UIColor.swift in Sources */,
+				EDBF75992683C9D800F6C7A7 /* BirthdayScreenAssembly.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
