@@ -19,9 +19,14 @@ final class BirthdayScreenViewController: BaseViewController {
     enum Constants {
         static let offset: CGFloat = 16
         static let doubleOffset: CGFloat = offset * 2
+        static let tripleOffset: CGFloat = offset * 3
+        static let imageSize: CGFloat = 240
     }
 
     private let controller: BirthdayScreenControlling
+
+    private var photoImageView: UIImageView!
+    private var imagePicker: ImagePicker!
 
     init(controller: BirthdayScreenControlling) {
         self.controller = controller
@@ -66,6 +71,14 @@ final class BirthdayScreenViewController: BaseViewController {
             builder.centerX == view.centerXAnchor
             builder.top == nameLabel.bottomAnchor + Constants.offset
         }
+
+        photoImageView = ViewFactory.makePhotoImageView(
+            image: childData.image,
+            upperView: ageLabel,
+            parentView: view,
+            size: Constants.imageSize,
+            upperOffset: Constants.tripleOffset
+        )
     }
 }
 

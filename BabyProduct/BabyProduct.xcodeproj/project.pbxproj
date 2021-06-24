@@ -30,6 +30,10 @@
 		EDBF75992683C9D800F6C7A7 /* BirthdayScreenAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF75952683C9D800F6C7A7 /* BirthdayScreenAssembly.swift */; };
 		EDBF759F2683CB1600F6C7A7 /* ChildData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF759E2683CB1600F6C7A7 /* ChildData.swift */; };
 		EDBF75DA2683D29900F6C7A7 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF75D92683D29900F6C7A7 /* Date.swift */; };
+		EDBF76872684FD7900F6C7A7 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF76862684FD7900F6C7A7 /* ImagePicker.swift */; };
+		EDBF768F2685030200F6C7A7 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF768E2685030200F6C7A7 /* UIView.swift */; };
+		EDBF76942685099D00F6C7A7 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF76932685099D00F6C7A7 /* UIViewController.swift */; };
+		EDBF769A26850F3800F6C7A7 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF769926850F3800F6C7A7 /* ViewFactory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +83,10 @@
 		EDBF75952683C9D800F6C7A7 /* BirthdayScreenAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayScreenAssembly.swift; sourceTree = "<group>"; };
 		EDBF759E2683CB1600F6C7A7 /* ChildData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildData.swift; sourceTree = "<group>"; };
 		EDBF75D92683D29900F6C7A7 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		EDBF76862684FD7900F6C7A7 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		EDBF768E2685030200F6C7A7 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		EDBF76932685099D00F6C7A7 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		EDBF769926850F3800F6C7A7 /* ViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,8 +178,10 @@
 		EDBF75412683A2E400F6C7A7 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				EDBF769826850F2D00F6C7A7 /* Factories */,
 				EDBF75722683BC3D00F6C7A7 /* UI */,
 				EDBF75362683A28200F6C7A7 /* Utils */,
+				EDBF76862684FD7900F6C7A7 /* ImagePicker.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -203,6 +213,8 @@
 				EDBF75612683A99F00F6C7A7 /* UIColor.swift */,
 				EDBF75852683C1AD00F6C7A7 /* UIApplication.swift */,
 				EDBF75D92683D29900F6C7A7 /* Date.swift */,
+				EDBF768E2685030200F6C7A7 /* UIView.swift */,
+				EDBF76932685099D00F6C7A7 /* UIViewController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -251,6 +263,14 @@
 				EDBF759E2683CB1600F6C7A7 /* ChildData.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		EDBF769826850F2D00F6C7A7 /* Factories */ = {
+			isa = PBXGroup;
+			children = (
+				EDBF769926850F3800F6C7A7 /* ViewFactory.swift */,
+			);
+			path = Factories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -392,13 +412,17 @@
 				EDBF74FE26839EF900F6C7A7 /* AppDelegate.swift in Sources */,
 				EDBF75532683A8B900F6C7A7 /* HomeController.swift in Sources */,
 				EDBF755C2683A95400F6C7A7 /* BaseViewController.swift in Sources */,
+				EDBF768F2685030200F6C7A7 /* UIView.swift in Sources */,
 				EDBF75812683BDB900F6C7A7 /* Font.swift in Sources */,
 				EDBF75862683C1AD00F6C7A7 /* UIApplication.swift in Sources */,
 				EDBF75962683C9D800F6C7A7 /* BirthdayScreenCoordinator.swift in Sources */,
+				EDBF769A26850F3800F6C7A7 /* ViewFactory.swift in Sources */,
+				EDBF76942685099D00F6C7A7 /* UIViewController.swift in Sources */,
 				EDBF750026839EF900F6C7A7 /* SceneDelegate.swift in Sources */,
 				EDBF75522683A8B900F6C7A7 /* HomeViewController.swift in Sources */,
 				EDBF75512683A8B900F6C7A7 /* HomeCoordinator.swift in Sources */,
 				EDBF75DA2683D29900F6C7A7 /* Date.swift in Sources */,
+				EDBF76872684FD7900F6C7A7 /* ImagePicker.swift in Sources */,
 				EDBF75622683A99F00F6C7A7 /* UIColor.swift in Sources */,
 				EDBF75992683C9D800F6C7A7 /* BirthdayScreenAssembly.swift in Sources */,
 			);

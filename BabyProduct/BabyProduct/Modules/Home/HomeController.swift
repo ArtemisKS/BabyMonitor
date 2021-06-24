@@ -21,7 +21,7 @@ protocol HomeInput: AnyObject {
 // MARK: -
 
 protocol HomeControlling: HomeInput {
-    func viewDidReceiveTapOnBirthdayScreenButton(name: String, age: Int)
+    func viewDidReceiveTapOnBirthdayScreenButton(childData: ChildData)
 }
 
 // MARK: -
@@ -37,13 +37,8 @@ final class HomeController {
         self.coordinator = coordinator
     }
 
-    func viewDidReceiveTapOnBirthdayScreenButton(name: String, age: Int) {
-        coordinator.openBirthdayScreen(
-            childData: ChildData(
-                name: name,
-                ageInMonths: age
-            )
-        )
+    func viewDidReceiveTapOnBirthdayScreenButton(childData: ChildData) {
+        coordinator.openBirthdayScreen(childData: childData)
     }
 }
 

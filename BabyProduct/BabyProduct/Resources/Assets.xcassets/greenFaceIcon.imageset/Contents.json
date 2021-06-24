@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "Default_place_holder_green@3x.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
