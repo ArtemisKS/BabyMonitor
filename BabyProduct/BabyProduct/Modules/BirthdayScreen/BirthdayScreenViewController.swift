@@ -20,8 +20,6 @@ final class BirthdayScreenViewController: UIViewController {
         static let offset: CGFloat = 16
         static let doubleOffset: CGFloat = offset * 2
         static let tripleOffset: CGFloat = offset * 3
-        static let numberImageSize: CGFloat = 84
-        static let swirlImageSize: CGFloat = 46
         static let shareButtonWidth: CGFloat = 182
     }
 
@@ -30,11 +28,8 @@ final class BirthdayScreenViewController: UIViewController {
     private var photoImageView: UIImageView!
     private var imagePicker: ImagePicker!
 
-    private var didPickImage = false
-
     private lazy var imageType: String = {
-        let imageTypes = ["blue", "green", "yellow"]
-        return imageTypes[Int.random(in: 0..<imageTypes.count)]
+        controller.getRandomColor()
     }()
 
     private var isModelX: Bool {
@@ -93,7 +88,7 @@ final class BirthdayScreenViewController: UIViewController {
         let screenBounds = UIScreen.main.bounds
 
         let photoSizeCoef: CGFloat = isModelX ? 1.59 : 1.73
-        let photoOffsetCoef: CGFloat = isModelX ? 6.6 : 5.05
+        let photoOffsetCoef: CGFloat = isModelX ? 6.6 : 5.02
         let photoSize = screenBounds.width / photoSizeCoef
         let photoOffset = screenBounds.height / photoOffsetCoef
 
@@ -104,8 +99,6 @@ final class BirthdayScreenViewController: UIViewController {
             size: photoSize,
             offset: photoOffset
         )
-
-        didPickImage = !childData.imageIsPlaceholder
 
         let backgroundImageView = UIImageView(image: getBackgroundImage())
         backgroundImageView.contentMode = .scaleAspectFill
@@ -143,28 +136,39 @@ final class BirthdayScreenViewController: UIViewController {
 
         let actualAge = makeAge(from: childData.ageInMonths)
         let numberImageView = UIImageView(image: UIImage(named: "\(actualAge)icon"))
-        numberImageView.contentMode = .scaleAspectFill
+        numberImageView.contentMode = .scaleAspectFit
+
+        let numberImageSize: CGFloat = isModelX ? 132 : 104
+        let swirlImageSize: CGFloat = isModelX ? 62 : 50
 
         numberImageView.layout { (builder) in
-            builder.width == Constants.numberImageSize
-            builder.height == Constants.numberImageSize
+            builder.height == (
+                actualAge < 10 ?
+                    numberImageSize :
+                    numberImageSize / 1.35
+            )
+            builder.width == (
+                actualAge < 10 ?
+                    numberImageSize / 1.35 :
+                    numberImageSize
+            )
         }
 
         let leftSwirlImageView = UIImageView(image: UIImage(named: "leftSwirl"))
         leftSwirlImageView.contentMode = .scaleAspectFit
         leftSwirlImageView.layout { (builder) in
-            builder.width == Constants.swirlImageSize
+            builder.width == swirlImageSize
         }
 
         let rightSwirlImageView = UIImageView(image: UIImage(named: "rightSwirl"))
         rightSwirlImageView.contentMode = .scaleAspectFit
         rightSwirlImageView.layout { (builder) in
-            builder.width == Constants.swirlImageSize
+            builder.width == swirlImageSize
         }
 
         let imagesStackView = UIStackView(arrangedSubviews: [leftSwirlImageView, numberImageView, rightSwirlImageView])
         imagesStackView.axis = .horizontal
-        imagesStackView.spacing = Constants.offset * 1.5
+        imagesStackView.spacing = Constants.offset
 
         let lowerLabel = UILabel()
         lowerLabel.text = makeAgeText(
@@ -178,7 +182,7 @@ final class BirthdayScreenViewController: UIViewController {
 
         let upperStackView = UIStackView(arrangedSubviews: [nameLabel, imagesStackView, lowerLabel])
         upperStackView.axis = .vertical
-        upperStackView.spacing = Constants.offset
+        upperStackView.spacing = Constants.offset / 2
 
         view.addSubview(upperStackView)
         upperStackView.layout { (builder) in
@@ -233,14 +237,16 @@ final class BirthdayScreenViewController: UIViewController {
         shareButton.addSubview(shareBackView)
 
         view.addSubview(shareButton)
+        let shareVerticalOffset = isModelX ?
+            Constants.doubleOffset : Constants.offset
         shareButton.layout { (builder) in
             builder.centerX == view.centerXAnchor
             builder.leading == shareBackView.leadingAnchor
             builder.top == shareBackView.topAnchor
             builder.trailing == shareBackView.trailingAnchor
             builder.bottom == shareBackView.bottomAnchor
-            builder.bottom == photoImageView.topAnchor - Constants.doubleOffset
-            builder.top == upperStackView.bottomAnchor + Constants.doubleOffset
+            builder.bottom == photoImageView.topAnchor - shareVerticalOffset * 1.5
+            builder.top == upperStackView.bottomAnchor + shareVerticalOffset
         }
 
         shareButton.addAction(.init(handler: { [weak self] _ in
@@ -260,10 +266,11 @@ final class BirthdayScreenViewController: UIViewController {
     }
 
     private func makeAgeText(olderThanYear: Bool, age: Int) -> String {
-        if olderThanYear {
-            return age > 1 ? "years" : "year"
+        var res = olderThanYear ? "year" : "month"
+        if age > 1 {
+            res += "s"
         }
-        return age > 1 ? "months" : "month"
+        return "\(res) old!"
     }
 
     private func getBackgroundImage() -> UIImage? {
@@ -276,11 +283,11 @@ final class BirthdayScreenViewController: UIViewController {
     }
 
     private func shareImage() {
-        guard let image = photoImageView.image, didPickImage else {
+        guard let image = photoImageView.image, controller.didPickPhoto else {
             view.makeToast("You've got no photo to share", duration: 1.5)
             return
         }
-        // set up activity view controller
+
         let imageToShare = [image]
         let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = view // so that iPads won't crash
@@ -299,7 +306,7 @@ final class BirthdayScreenViewController: UIViewController {
             }
             style.backgroundColor = .systemGreen
             self.view.makeToast(
-                "Image shared successfully!",
+                "Image shared successfully",
                 duration: 2,
                 style: style
             )
@@ -321,7 +328,9 @@ extension BirthdayScreenViewController: BirthdayScreenView {
 extension BirthdayScreenViewController: ImagePickerDelegate {
 
     func didSelect(image: UIImage?) {
-        didPickImage = true
         photoImageView.image = image
+        if let image = image {
+            controller.didPickPhoto(image)
+        }
     }
 }

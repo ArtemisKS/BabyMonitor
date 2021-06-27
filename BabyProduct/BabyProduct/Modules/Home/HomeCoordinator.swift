@@ -9,7 +9,7 @@
 import UIKit
 
 protocol HomeCoordinating: AnyObject {
-    func openBirthdayScreen(childData: ChildData)
+    func openBirthdayScreen(childData: ChildData, delegate: BirthdayScreenDelegate?)
 }
 
 // MARK: -
@@ -29,8 +29,9 @@ final class HomeCoordinator {
 
 extension HomeCoordinator: HomeCoordinating {
 
-    func openBirthdayScreen(childData: ChildData) {
+    func openBirthdayScreen(childData: ChildData, delegate: BirthdayScreenDelegate?) {
         let module = makeBirthdayScreen(childData)
+        module.input.delegate = delegate
         let navigationController = UINavigationController(rootViewController: module.viewController)
         navigationController.modalPresentationStyle = .fullScreen
         viewController?.present(navigationController, animated: true)

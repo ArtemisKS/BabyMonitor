@@ -10,6 +10,7 @@ import UIKit
 import Combine
 
 protocol HomeView: AnyObject {
+    func updatePhoto(_ photo: UIImage)
 }
 
 // MARK: -
@@ -36,13 +37,14 @@ final class HomeViewController: BaseViewController {
     private let controller: HomeControlling
 
     private let showBirthdayScreenButton = ActionButton()
+    private let nameTextField = UITextField()
     private var photoImageView: UIImageView!
     private var imagePicker: ImagePicker!
 
-    private var didPickImage = false
+    private var didPickPhoto = false
 
-    @Published private var name = "Хуй"
-    @Published private var ageInMonths = 10
+    @Published private var name = ""
+    @Published private var ageInMonths = 0
 
     private var cancellable: AnyCancellable?
     
@@ -66,14 +68,27 @@ final class HomeViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupChildData()
         startAvoidingKeyboard()
         setupImagePicker()
         setupUI()
         subscribeOnButtonUpdates()
+        setupViewTapRecognizer()
     }
 
     deinit {
         stopAvoidingKeyboard()
+    }
+
+    private func setupViewTapRecognizer() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleViewTap(_:)))
+        view.addGestureRecognizer(tap)
+    }
+
+    private func setupChildData() {
+        let childCreds = controller.getChildCredentials()
+        name = childCreds?.name ?? ""
+        ageInMonths = childCreds?.ageInMonths ?? 0
     }
 
     private func setupImagePicker() {
@@ -87,12 +102,14 @@ final class HomeViewController: BaseViewController {
     }
 }
 
-// UI setup
+// MARK: - UI Setup
+
 private extension HomeViewController {
 
     func makeTitleLabel() -> UILabel {
         let label = UILabel()
         label.text = "Baby monitor"
+        label.textColor = .white
         label.font = .systemFont(ofSize: 25, weight: .bold)
 
         view.addSubview(label)
@@ -104,9 +121,13 @@ private extension HomeViewController {
     }
 
     func makeTextField(upperView: UIView) -> UITextField {
-        let nameTextField = UITextField()
         nameTextField.placeholder = "Enter your name"
         nameTextField.textAlignment = .center
+        nameTextField.textColor = .white
+        if !name.isEmpty {
+            nameTextField.text = name
+        }
+        nameTextField.autocorrectionType = .no
 
         view.addSubview(nameTextField)
         nameTextField.layout { (builder) in
@@ -123,6 +144,14 @@ private extension HomeViewController {
         birthdayPicker.datePickerMode = .date
         birthdayPicker.maximumDate = Date()
         birthdayPicker.minimumDate = Date() - Constants.secInMaxAgeYears
+        birthdayPicker.preferredDatePickerStyle = .compact
+
+        if ageInMonths != 0 {
+            birthdayPicker.setDate(
+                Date() - Double(ageInMonths) * Constants.secInMon,
+                animated: false
+            )
+        }
 
         view.addSubview(birthdayPicker)
         birthdayPicker.layout { (builder) in
@@ -137,12 +166,12 @@ private extension HomeViewController {
 
     func onPickerDateSelected(picker: UIDatePicker) {
         ageInMonths = Int((Date() - picker  .date) / Constants.secInMon)
-//        presentedViewController?.dismiss(animated: true, completion: nil)
     }
 
     func setupPhotoImageView(upperView: UIView) {
+        let type = controller.getRandomColor()
         photoImageView = ViewFactory.makePhotoImageView(
-            image: UIImage(named: "yellowFaceIcon"),
+            image: UIImage(named: "\(type)FaceIcon"),
             upperView: upperView,
             parentView: view,
             size: Constants.imageSize,
@@ -151,6 +180,10 @@ private extension HomeViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         photoImageView.isUserInteractionEnabled = true
         photoImageView.addGestureRecognizer(tap)
+
+        if let childPhoto = controller.getPhoto() {
+            photoImageView.image = childPhoto
+        }
     }
 
     func setupBirthdayScreenButton() {
@@ -177,25 +210,44 @@ private extension HomeViewController {
     }
 
     private func onBirthdayScreenButtonTap() {
-        controller.viewDidReceiveTapOnBirthdayScreenButton(
-            childData: ChildData(
-                name: name,
-                ageInMonths: ageInMonths,
-                image: photoImageView.image,
-                imageIsPlaceholder: !didPickImage
+
+        func onButtonTap() {
+            controller.viewDidReceiveTapOnBirthdayScreenButton(
+                childData: ChildData(
+                    name: name,
+                    ageInMonths: ageInMonths,
+                    image: photoImageView.image
+                ),
+                didPickPhoto: didPickPhoto
             )
-        )
+        }
+
+        execCATransaction {
+            self.nameTextField.resignFirstResponder()
+        } completion: {
+            onButtonTap()
+        }
     }
 
     @objc private func handleTap(_ sender: UITapGestureRecognizer) {
         guard let view = sender.view else { return }
         imagePicker.present(from: view)
     }
+
+    @objc private func handleViewTap(_ sender: UITapGestureRecognizer) {
+        if nameTextField.isFirstResponder {
+            nameTextField.resignFirstResponder()
+        }
+    }
 }
 
 // MARK: - HomeView
 
 extension HomeViewController: HomeView {
+
+    func updatePhoto(_ photo: UIImage) {
+        photoImageView.image = photo
+    }
 }
 
 extension HomeViewController: UITextFieldDelegate {
@@ -213,8 +265,17 @@ extension HomeViewController: UITextFieldDelegate {
             return true
         }
         let newText = (text as NSString).replacingCharacters(in: range, with: string)
-        let shouldChange = newText.isEmpty ||
-            (newText.allSatisfy(\.isLetter) && newText.count <= Constants.maxNameLen)
+        let hasCorrectPattern =
+            !newText.trimmed.isEmpty
+            && newText != text
+            && !(newText.last?.isWhitespace == true
+                    && text.last?.isWhitespace == true)
+            && newText.allSatisfy { $0.isLetter || $0.isWhitespace }
+            && newText.count <= Constants.maxNameLen
+        let shouldChange =
+            newText.isEmpty
+            || newText.count < text.count
+            || hasCorrectPattern
         if shouldChange {
             name = newText
         }
@@ -225,7 +286,7 @@ extension HomeViewController: UITextFieldDelegate {
 extension HomeViewController: ImagePickerDelegate {
 
     func didSelect(image: UIImage?) {
-        didPickImage = true
+        didPickPhoto = true
         photoImageView.image = image
     }
 }

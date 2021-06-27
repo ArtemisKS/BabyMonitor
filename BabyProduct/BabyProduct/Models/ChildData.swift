@@ -7,21 +7,38 @@
 
 import UIKit
 
-class ChildData {
-
+struct ChildCredentials: Codable {
     let name: String
     let ageInMonths: Int
+}
+
+class ChildData {
+
+    let childCreds: ChildCredentials
     let image: UIImage?
-    let imageIsPlaceholder: Bool
+
+    var name: String {
+        childCreds.name
+    }
+
+    var ageInMonths: Int {
+        childCreds.ageInMonths
+    }
 
     init(
         name: String,
         ageInMonths: Int,
-        image: UIImage?,
-        imageIsPlaceholder: Bool) {
-        self.name = name
-        self.ageInMonths = ageInMonths
+        image: UIImage?
+    ) {
+        self.childCreds = .init(name: name, ageInMonths: ageInMonths)
         self.image = image
-        self.imageIsPlaceholder = imageIsPlaceholder
+    }
+
+    convenience init(childCreds: ChildCredentials, image: UIImage?) {
+        self.init(
+            name: childCreds.name,
+            ageInMonths: childCreds.ageInMonths,
+            image: image
+        )
     }
 }

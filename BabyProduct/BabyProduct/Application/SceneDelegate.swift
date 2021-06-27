@@ -55,7 +55,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 extension SceneDelegate {
 
     func makeRoot() -> UIViewController {
-        HomeAssembly(birthdayScreenAssembly: BirthdayScreenAssembly()).makeHome()
+        let childDataStoring: ChildDataStoring = LocalStorage(userDefaults: .standard)
+        let colorRandomizer: ColorRandomizer = RandomService()
+        return HomeAssembly(
+            birthdayScreenAssembly: BirthdayScreenAssembly(
+                childDataStoring: childDataStoring,
+                colorRandomizer: colorRandomizer
+            ),
+            childDataStoring: childDataStoring,
+            colorRandomizer: colorRandomizer
+        ).makeHome()
     }
 
     func makeWindow(scene: UIWindowScene, root: UIViewController) -> UIWindow {

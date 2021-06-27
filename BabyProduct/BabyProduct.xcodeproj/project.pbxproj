@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		ED4A206A26889E9C0087900A /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A206926889E9C0087900A /* Toast.swift */; };
 		ED4A206F2688ABD10087900A /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A206E2688ABD10087900A /* UIImage.swift */; };
+		ED4A20782688FF780087900A /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A20772688FF780087900A /* LocalStorage.swift */; };
+		ED4A2080268903420087900A /* ChildDataStoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A207F268903420087900A /* ChildDataStoring.swift */; };
+		ED4A2088268931240087900A /* RandomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A2087268931240087900A /* RandomService.swift */; };
+		ED4A208D268938490087900A /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A208C268938490087900A /* String.swift */; };
 		EDBF74FE26839EF900F6C7A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF74FD26839EF900F6C7A7 /* AppDelegate.swift */; };
 		EDBF750026839EF900F6C7A7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF74FF26839EF900F6C7A7 /* SceneDelegate.swift */; };
 		EDBF750726839EFC00F6C7A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDBF750626839EFC00F6C7A7 /* Assets.xcassets */; };
@@ -58,6 +62,10 @@
 /* Begin PBXFileReference section */
 		ED4A206926889E9C0087900A /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		ED4A206E2688ABD10087900A /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		ED4A20772688FF780087900A /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
+		ED4A207F268903420087900A /* ChildDataStoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildDataStoring.swift; sourceTree = "<group>"; };
+		ED4A2087268931240087900A /* RandomService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomService.swift; sourceTree = "<group>"; };
+		ED4A208C268938490087900A /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		EDBF74FA26839EF900F6C7A7 /* BabyProduct.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BabyProduct.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDBF74FD26839EF900F6C7A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EDBF74FF26839EF900F6C7A7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -118,6 +126,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		ED4A20762688FF6D0087900A /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				ED4A20772688FF780087900A /* LocalStorage.swift */,
+				ED4A207F268903420087900A /* ChildDataStoring.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
 		EDBF74F126839EF900F6C7A7 = {
 			isa = PBXGroup;
 			children = (
@@ -175,6 +192,7 @@
 				EDBF75372683A28200F6C7A7 /* AutolayoutDSL.swift */,
 				EDBF75382683A28200F6C7A7 /* AssembledModule.swift */,
 				EDBF75802683BDB900F6C7A7 /* Font.swift */,
+				ED4A2087268931240087900A /* RandomService.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -182,6 +200,7 @@
 		EDBF75412683A2E400F6C7A7 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				ED4A20762688FF6D0087900A /* Storage */,
 				EDBF769826850F2D00F6C7A7 /* Factories */,
 				EDBF75722683BC3D00F6C7A7 /* UI */,
 				EDBF75362683A28200F6C7A7 /* Utils */,
@@ -220,6 +239,7 @@
 				EDBF768E2685030200F6C7A7 /* UIView.swift */,
 				EDBF76932685099D00F6C7A7 /* UIViewController.swift */,
 				ED4A206E2688ABD10087900A /* UIImage.swift */,
+				ED4A208C268938490087900A /* String.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -408,10 +428,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED4A208D268938490087900A /* String.swift in Sources */,
 				EDBF75972683C9D800F6C7A7 /* BirthdayScreenViewController.swift in Sources */,
 				ED4A206F2688ABD10087900A /* UIImage.swift in Sources */,
 				ED4A206A26889E9C0087900A /* Toast.swift in Sources */,
 				EDBF75742683BC5000F6C7A7 /* ActionButtonShadow.swift in Sources */,
+				ED4A2088268931240087900A /* RandomService.swift in Sources */,
 				EDBF75542683A8B900F6C7A7 /* HomeAssembly.swift in Sources */,
 				EDBF75392683A28200F6C7A7 /* AutolayoutDSL.swift in Sources */,
 				EDBF759F2683CB1600F6C7A7 /* ChildData.swift in Sources */,
@@ -431,7 +453,9 @@
 				EDBF75512683A8B900F6C7A7 /* HomeCoordinator.swift in Sources */,
 				EDBF75DA2683D29900F6C7A7 /* Date.swift in Sources */,
 				EDBF76872684FD7900F6C7A7 /* ImagePicker.swift in Sources */,
+				ED4A20782688FF780087900A /* LocalStorage.swift in Sources */,
 				EDBF75622683A99F00F6C7A7 /* UIColor.swift in Sources */,
+				ED4A2080268903420087900A /* ChildDataStoring.swift in Sources */,
 				EDBF75992683C9D800F6C7A7 /* BirthdayScreenAssembly.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

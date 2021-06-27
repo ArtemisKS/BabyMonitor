@@ -55,3 +55,15 @@ extension UIViewController {
         )
     }
 }
+
+extension UIViewController {
+    func execCATransaction(
+        animation: @escaping () -> Void,
+        completion: @escaping () -> Void) {
+
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        animation()
+        CATransaction.commit()
+    }
+}
