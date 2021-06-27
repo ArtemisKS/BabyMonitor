@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "Btn_share@3x.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

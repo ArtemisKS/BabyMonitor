@@ -16,7 +16,7 @@ protocol HomeView: AnyObject {
 
 final class HomeViewController: BaseViewController {
 
-    enum Constants {
+    private enum Constants {
         static let offset: CGFloat = 16
         static let doubleOffset: CGFloat = offset * 2
         static let tripleOffset: CGFloat = offset * 3
@@ -26,8 +26,11 @@ final class HomeViewController: BaseViewController {
         static let secInDay: TimeInterval = 60 * 60 * 24
         static let secInMon: TimeInterval = secInDay * 30
         static let secInYear: TimeInterval = secInMon * 12
-        static let minAgeMonths = 1
-        static let maxAgeMonths = 12
+        static let secInMaxAgeYears: TimeInterval = secInYear * Double(maxAgeYears)
+        static let maxAgeYears = 12
+        static let minAgeMonths = 1 // 1 month min age
+        static let maxAgeMonths = 12 * maxAgeYears // 12 years max age
+        static let maxNameLen = 30
     }
 
     private let controller: HomeControlling
@@ -36,19 +39,21 @@ final class HomeViewController: BaseViewController {
     private var photoImageView: UIImageView!
     private var imagePicker: ImagePicker!
 
-    @Published private var name = ""
-    @Published private var ageInMonths = 0
+    private var didPickImage = false
+
+    @Published private var name = "Хуй"
+    @Published private var ageInMonths = 10
 
     private var cancellable: AnyCancellable?
-
+    
     private var validToSubmit: AnyPublisher<Bool, Never> {
-      return Publishers.CombineLatest($name, $ageInMonths)
-        .map { name, age in
-            !name.isEmpty &&
-                age >= Constants.minAgeMonths && age <= Constants.maxAgeMonths
-        }.eraseToAnyPublisher()
+        return Publishers.CombineLatest($name, $ageInMonths)
+            .map { name, age in
+                !name.isEmpty &&
+                    age >= Constants.minAgeMonths && age <= Constants.maxAgeMonths
+            }.eraseToAnyPublisher()
     }
-
+    
     init(controller: HomeControlling) {
         self.controller = controller
         super.init(nibName: nil, bundle: nil)
@@ -75,7 +80,17 @@ final class HomeViewController: BaseViewController {
         imagePicker = ImagePicker(presentationController: self, delegate: self)
     }
 
-    private func setupUI() {
+    private func subscribeOnButtonUpdates() {
+        cancellable = validToSubmit
+            .receive(on: RunLoop.main)
+            .assign(to: \.buttonIsEnabled, on: showBirthdayScreenButton)
+    }
+}
+
+// UI setup
+private extension HomeViewController {
+
+    func makeTitleLabel() -> UILabel {
         let label = UILabel()
         label.text = "Baby monitor"
         label.font = .systemFont(ofSize: 25, weight: .bold)
@@ -85,47 +100,61 @@ final class HomeViewController: BaseViewController {
             builder.centerX == view.centerXAnchor
             builder.top == view.topAnchor + (Constants.offset + UIApplication.topSafeArea)
         }
+        return label
+    }
 
+    func makeTextField(upperView: UIView) -> UITextField {
         let nameTextField = UITextField()
         nameTextField.placeholder = "Enter your name"
+        nameTextField.textAlignment = .center
 
         view.addSubview(nameTextField)
         nameTextField.layout { (builder) in
             builder.centerX == view.centerXAnchor
-            builder.top == label.bottomAnchor + Constants.doubleOffset * 2
+            builder.top == upperView.bottomAnchor + Constants.doubleOffset * 2
         }
         nameTextField.returnKeyType = .done
         nameTextField.delegate = self
+        return nameTextField
+    }
 
+    func makeBirthdayPicker(upperView: UIView) -> UIDatePicker {
         let birthdayPicker = UIDatePicker()
         birthdayPicker.datePickerMode = .date
         birthdayPicker.maximumDate = Date()
-        birthdayPicker.minimumDate = Date() - Constants.secInYear
+        birthdayPicker.minimumDate = Date() - Constants.secInMaxAgeYears
 
         view.addSubview(birthdayPicker)
         birthdayPicker.layout { (builder) in
             builder.centerX == view.centerXAnchor
-            builder.top == nameTextField.bottomAnchor + Constants.offset
+            builder.top == upperView.bottomAnchor + Constants.offset
         }
         birthdayPicker.addAction(.init(handler: { _ in
-            let date = birthdayPicker.date
-            self.ageInMonths = Int((Date() - date) / Constants.secInMon)
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
+            self.onPickerDateSelected(picker: birthdayPicker)
         }), for: .valueChanged)
+        return birthdayPicker
+    }
 
+    func onPickerDateSelected(picker: UIDatePicker) {
+        ageInMonths = Int((Date() - picker  .date) / Constants.secInMon)
+//        presentedViewController?.dismiss(animated: true, completion: nil)
+    }
+
+    func setupPhotoImageView(upperView: UIView) {
         photoImageView = ViewFactory.makePhotoImageView(
             image: UIImage(named: "yellowFaceIcon"),
-            upperView: birthdayPicker,
+            upperView: upperView,
             parentView: view,
             size: Constants.imageSize,
-            upperOffset: Constants.tripleOffset
+            offset: Constants.tripleOffset
         )
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         photoImageView.isUserInteractionEnabled = true
         photoImageView.addGestureRecognizer(tap)
+    }
 
+    func setupBirthdayScreenButton() {
         showBirthdayScreenButton.setTitle("Show birthday screen", for: .normal)
-
         view.addSubview(showBirthdayScreenButton)
         showBirthdayScreenButton.layout { (builder) in
             builder.height == Constants.buttonHeight
@@ -139,12 +168,21 @@ final class HomeViewController: BaseViewController {
         }), for: .touchUpInside)
     }
 
+    func setupUI() {
+        let label = makeTitleLabel()
+        let nameTextField = makeTextField(upperView: label)
+        let birthdayPicker = makeBirthdayPicker(upperView: nameTextField)
+        setupPhotoImageView(upperView: birthdayPicker)
+        setupBirthdayScreenButton()
+    }
+
     private func onBirthdayScreenButtonTap() {
         controller.viewDidReceiveTapOnBirthdayScreenButton(
             childData: ChildData(
                 name: name,
                 ageInMonths: ageInMonths,
-                image: photoImageView.image
+                image: photoImageView.image,
+                imageIsPlaceholder: !didPickImage
             )
         )
     }
@@ -152,12 +190,6 @@ final class HomeViewController: BaseViewController {
     @objc private func handleTap(_ sender: UITapGestureRecognizer) {
         guard let view = sender.view else { return }
         imagePicker.present(from: view)
-    }
-
-    private func subscribeOnButtonUpdates() {
-        cancellable = validToSubmit
-          .receive(on: RunLoop.main)
-          .assign(to: \.buttonIsEnabled, on: showBirthdayScreenButton)
     }
 }
 
@@ -182,7 +214,7 @@ extension HomeViewController: UITextFieldDelegate {
         }
         let newText = (text as NSString).replacingCharacters(in: range, with: string)
         let shouldChange = newText.isEmpty ||
-            (newText.allSatisfy(\.isLetter) && newText.count <= 30)
+            (newText.allSatisfy(\.isLetter) && newText.count <= Constants.maxNameLen)
         if shouldChange {
             name = newText
         }
@@ -193,6 +225,7 @@ extension HomeViewController: UITextFieldDelegate {
 extension HomeViewController: ImagePickerDelegate {
 
     func didSelect(image: UIImage?) {
+        didPickImage = true
         photoImageView.image = image
     }
 }

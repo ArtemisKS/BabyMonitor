@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED4A206A26889E9C0087900A /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A206926889E9C0087900A /* Toast.swift */; };
+		ED4A206F2688ABD10087900A /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A206E2688ABD10087900A /* UIImage.swift */; };
 		EDBF74FE26839EF900F6C7A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF74FD26839EF900F6C7A7 /* AppDelegate.swift */; };
 		EDBF750026839EF900F6C7A7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF74FF26839EF900F6C7A7 /* SceneDelegate.swift */; };
 		EDBF750726839EFC00F6C7A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDBF750626839EFC00F6C7A7 /* Assets.xcassets */; };
@@ -54,6 +56,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		ED4A206926889E9C0087900A /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		ED4A206E2688ABD10087900A /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		EDBF74FA26839EF900F6C7A7 /* BabyProduct.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BabyProduct.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDBF74FD26839EF900F6C7A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EDBF74FF26839EF900F6C7A7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -215,6 +219,7 @@
 				EDBF75D92683D29900F6C7A7 /* Date.swift */,
 				EDBF768E2685030200F6C7A7 /* UIView.swift */,
 				EDBF76932685099D00F6C7A7 /* UIViewController.swift */,
+				ED4A206E2688ABD10087900A /* UIImage.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -233,6 +238,7 @@
 			children = (
 				EDBF755B2683A95400F6C7A7 /* BaseViewController.swift */,
 				EDBF75732683BC5000F6C7A7 /* ActionButtonShadow.swift */,
+				ED4A206926889E9C0087900A /* Toast.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -403,6 +409,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDBF75972683C9D800F6C7A7 /* BirthdayScreenViewController.swift in Sources */,
+				ED4A206F2688ABD10087900A /* UIImage.swift in Sources */,
+				ED4A206A26889E9C0087900A /* Toast.swift in Sources */,
 				EDBF75742683BC5000F6C7A7 /* ActionButtonShadow.swift in Sources */,
 				EDBF75542683A8B900F6C7A7 /* HomeAssembly.swift in Sources */,
 				EDBF75392683A28200F6C7A7 /* AutolayoutDSL.swift in Sources */,

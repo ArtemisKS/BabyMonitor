@@ -10,9 +10,12 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        let lineAppearance = UINavigationBarAppearance()
+        lineAppearance.configureWithTransparentBackground()
+
+        UINavigationBar.appearance().standardAppearance = lineAppearance
         sleep(1)
         // Override point for customization after application launch.
         return true

@@ -32,6 +32,7 @@ extension HomeCoordinator: HomeCoordinating {
     func openBirthdayScreen(childData: ChildData) {
         let module = makeBirthdayScreen(childData)
         let navigationController = UINavigationController(rootViewController: module.viewController)
+        navigationController.modalPresentationStyle = .fullScreen
         viewController?.present(navigationController, animated: true)
     }
 }

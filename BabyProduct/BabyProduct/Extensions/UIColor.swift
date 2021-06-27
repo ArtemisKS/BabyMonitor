@@ -29,6 +29,14 @@ extension UIColor {
         UIColor(red: 215, green: 46, blue: 71)
     }
 
+    class var customRed: UIColor {
+        UIColor(red: 215, green: 129, blue: 127)
+    }
+
+    class var customBlack: UIColor {
+        UIColor(red: 59, green: 69, blue: 96)
+    }
+
     // MARK: - Custom Initializers
 
     convenience init(red: Int, green: Int, blue: Int, alpha: CGFloat = 1.0) {

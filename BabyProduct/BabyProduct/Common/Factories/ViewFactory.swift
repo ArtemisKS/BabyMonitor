@@ -14,13 +14,17 @@ enum ViewFactory {
         upperView: UIView,
         parentView: UIView,
         size: CGFloat,
-        upperOffset: CGFloat
+        offset: CGFloat
     ) -> UIImageView {
         let photoImageView = UIImageView(image: image)
         photoImageView.contentMode = .scaleAspectFill
         parentView.addSubview(photoImageView)
         photoImageView.layout { (builder) in
-            builder.top == upperView.bottomAnchor + upperOffset
+            if upperView === parentView {
+                builder.bottom == parentView.bottomAnchor - offset
+            } else {
+                builder.top == upperView.bottomAnchor + offset
+            }
             builder.centerX == parentView.centerXAnchor
             builder.width == size
             builder.height == size

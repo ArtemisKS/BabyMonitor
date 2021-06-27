@@ -19,9 +19,8 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blueFaceIcon" translatesAutoresizingMaskIntoConstraints="NO" id="j9E-dY-dts">
                                 <rect key="frame" x="16" y="32" width="382" height="810"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="by AK" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iYr-nG-tYD">
-                                <rect key="frame" x="149" y="742" width="116" height="92"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="by AK" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iYr-nG-tYD">
+                                <rect key="frame" x="149" y="738" width="116" height="92"/>
                                 <fontDescription key="fontDescription" name="Zapfino" family="Zapfino" pointSize="27"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -32,8 +31,10 @@
                         <constraints>
                             <constraint firstItem="j9E-dY-dts" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Fb7-Lv-obx"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="j9E-dY-dts" secondAttribute="trailing" constant="16" id="I0z-BC-EQ6"/>
+                            <constraint firstItem="iYr-nG-tYD" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="LDp-vZ-6rs"/>
                             <constraint firstItem="j9E-dY-dts" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" constant="-16" id="e6c-Iy-18Z"/>
                             <constraint firstItem="j9E-dY-dts" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="sTa-id-KMC"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="iYr-nG-tYD" secondAttribute="bottom" constant="32" id="yWw-8W-4eL"/>
                         </constraints>
                     </view>
                 </viewController>
