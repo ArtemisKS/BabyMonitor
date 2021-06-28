@@ -13,6 +13,7 @@
 		ED4A2080268903420087900A /* ChildDataStoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A207F268903420087900A /* ChildDataStoring.swift */; };
 		ED4A2088268931240087900A /* RandomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A2087268931240087900A /* RandomService.swift */; };
 		ED4A208D268938490087900A /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A208C268938490087900A /* String.swift */; };
+		ED4A20D02689DDEB0087900A /* ValidatorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A20CF2689DDEB0087900A /* ValidatorService.swift */; };
 		EDBF74FE26839EF900F6C7A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF74FD26839EF900F6C7A7 /* AppDelegate.swift */; };
 		EDBF750026839EF900F6C7A7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF74FF26839EF900F6C7A7 /* SceneDelegate.swift */; };
 		EDBF750726839EFC00F6C7A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDBF750626839EFC00F6C7A7 /* Assets.xcassets */; };
@@ -66,6 +67,7 @@
 		ED4A207F268903420087900A /* ChildDataStoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildDataStoring.swift; sourceTree = "<group>"; };
 		ED4A2087268931240087900A /* RandomService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomService.swift; sourceTree = "<group>"; };
 		ED4A208C268938490087900A /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		ED4A20CF2689DDEB0087900A /* ValidatorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorService.swift; sourceTree = "<group>"; };
 		EDBF74FA26839EF900F6C7A7 /* BabyProduct.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BabyProduct.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDBF74FD26839EF900F6C7A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EDBF74FF26839EF900F6C7A7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -135,6 +137,15 @@
 			path = Storage;
 			sourceTree = "<group>";
 		};
+		ED4A20CE2689DDD70087900A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				ED4A2087268931240087900A /* RandomService.swift */,
+				ED4A20CF2689DDEB0087900A /* ValidatorService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		EDBF74F126839EF900F6C7A7 = {
 			isa = PBXGroup;
 			children = (
@@ -189,10 +200,10 @@
 		EDBF75362683A28200F6C7A7 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				ED4A20CE2689DDD70087900A /* Services */,
 				EDBF75372683A28200F6C7A7 /* AutolayoutDSL.swift */,
 				EDBF75382683A28200F6C7A7 /* AssembledModule.swift */,
 				EDBF75802683BDB900F6C7A7 /* Font.swift */,
-				ED4A2087268931240087900A /* RandomService.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -475,6 +486,7 @@
 				EDBF75DA2683D29900F6C7A7 /* Date.swift in Sources */,
 				EDBF76872684FD7900F6C7A7 /* ImagePicker.swift in Sources */,
 				ED4A20782688FF780087900A /* LocalStorage.swift in Sources */,
+				ED4A20D02689DDEB0087900A /* ValidatorService.swift in Sources */,
 				EDBF75622683A99F00F6C7A7 /* UIColor.swift in Sources */,
 				ED4A2080268903420087900A /* ChildDataStoring.swift in Sources */,
 				EDBF75992683C9D800F6C7A7 /* BirthdayScreenAssembly.swift in Sources */,

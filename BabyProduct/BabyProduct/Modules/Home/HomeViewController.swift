@@ -28,7 +28,6 @@ final class HomeViewController: BaseViewController {
         static let maxAgeYears = 12
         static let minAgeMonths = 1 // 1 month min age
         static let maxAgeMonths = 12 * maxAgeYears // 12 years max age
-        static let maxNameLen = 30
     }
 
     private let controller: HomeControlling
@@ -262,17 +261,7 @@ extension HomeViewController: UITextFieldDelegate {
             return true
         }
         let newText = (text as NSString).replacingCharacters(in: range, with: string)
-        let hasCorrectPattern =
-            !newText.trimmed.isEmpty
-            && newText != text
-            && !(newText.last?.isWhitespace == true
-                    && text.last?.isWhitespace == true)
-            && newText.allSatisfy { $0.isLetter || $0.isWhitespace }
-            && newText.count <= Const.maxNameLen
-        let shouldChange =
-            newText.isEmpty
-            || newText.count < text.count
-            || hasCorrectPattern
+        let shouldChange = ValidatorService.validateName(text: text, newText: newText)
         if shouldChange {
             name = newText
         }
