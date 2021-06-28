@@ -19,4 +19,10 @@ extension UIView {
         clipsToBounds = true
         layer.cornerRadius = radius
     }
+
+    func makeScreenshot() -> UIImage {
+      return UIGraphicsImageRenderer(size: bounds.size).image { _ in
+        drawHierarchy(in: CGRect(origin: .zero, size: bounds.size), afterScreenUpdates: true)
+      }
+    }
 }

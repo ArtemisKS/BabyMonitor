@@ -57,6 +57,11 @@ extension UIViewController {
 }
 
 extension UIViewController {
+
+    var isModelX: Bool {
+        UIApplication.topSafeArea > 20
+    }
+
     func execCATransaction(
         animation: @escaping () -> Void,
         completion: @escaping () -> Void) {

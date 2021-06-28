@@ -17,10 +17,7 @@ protocol HomeView: AnyObject {
 
 final class HomeViewController: BaseViewController {
 
-    private enum Constants {
-        static let offset: CGFloat = 16
-        static let doubleOffset: CGFloat = offset * 2
-        static let tripleOffset: CGFloat = offset * 3
+    private enum Const {
         static let imageSize: CGFloat = 240
         static let buttonHeight: CGFloat = 48
         static let datePickerWidth: CGFloat = 280
@@ -52,7 +49,7 @@ final class HomeViewController: BaseViewController {
         return Publishers.CombineLatest($name, $ageInMonths)
             .map { name, age in
                 !name.isEmpty &&
-                    age >= Constants.minAgeMonths && age <= Constants.maxAgeMonths
+                    age >= Const.minAgeMonths && age <= Const.maxAgeMonths
             }.eraseToAnyPublisher()
     }
     
@@ -100,114 +97,6 @@ final class HomeViewController: BaseViewController {
             .receive(on: RunLoop.main)
             .assign(to: \.buttonIsEnabled, on: showBirthdayScreenButton)
     }
-}
-
-// MARK: - UI Setup
-
-private extension HomeViewController {
-
-    func makeTitleLabel() -> UILabel {
-        let label = UILabel()
-        label.text = "Baby monitor"
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 25, weight: .bold)
-
-        view.addSubview(label)
-        label.layout { (builder) in
-            builder.centerX == view.centerXAnchor
-            builder.top == view.topAnchor + (Constants.offset + UIApplication.topSafeArea)
-        }
-        return label
-    }
-
-    func makeTextField(upperView: UIView) -> UITextField {
-        nameTextField.placeholder = "Enter your name"
-        nameTextField.textAlignment = .center
-        nameTextField.textColor = .white
-        if !name.isEmpty {
-            nameTextField.text = name
-        }
-        nameTextField.autocorrectionType = .no
-
-        view.addSubview(nameTextField)
-        nameTextField.layout { (builder) in
-            builder.centerX == view.centerXAnchor
-            builder.top == upperView.bottomAnchor + Constants.doubleOffset * 2
-        }
-        nameTextField.returnKeyType = .done
-        nameTextField.delegate = self
-        return nameTextField
-    }
-
-    func makeBirthdayPicker(upperView: UIView) -> UIDatePicker {
-        let birthdayPicker = UIDatePicker()
-        birthdayPicker.datePickerMode = .date
-        birthdayPicker.maximumDate = Date()
-        birthdayPicker.minimumDate = Date() - Constants.secInMaxAgeYears
-        birthdayPicker.preferredDatePickerStyle = .compact
-
-        if ageInMonths != 0 {
-            birthdayPicker.setDate(
-                Date() - Double(ageInMonths) * Constants.secInMon,
-                animated: false
-            )
-        }
-
-        view.addSubview(birthdayPicker)
-        birthdayPicker.layout { (builder) in
-            builder.centerX == view.centerXAnchor
-            builder.top == upperView.bottomAnchor + Constants.offset
-        }
-        birthdayPicker.addAction(.init(handler: { _ in
-            self.onPickerDateSelected(picker: birthdayPicker)
-        }), for: .valueChanged)
-        return birthdayPicker
-    }
-
-    func onPickerDateSelected(picker: UIDatePicker) {
-        ageInMonths = Int((Date() - picker  .date) / Constants.secInMon)
-    }
-
-    func setupPhotoImageView(upperView: UIView) {
-        let type = controller.getRandomColor()
-        photoImageView = ViewFactory.makePhotoImageView(
-            image: UIImage(named: "\(type)FaceIcon"),
-            upperView: upperView,
-            parentView: view,
-            size: Constants.imageSize,
-            offset: Constants.tripleOffset
-        )
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
-        photoImageView.isUserInteractionEnabled = true
-        photoImageView.addGestureRecognizer(tap)
-
-        if let childPhoto = controller.getPhoto() {
-            photoImageView.image = childPhoto
-        }
-    }
-
-    func setupBirthdayScreenButton() {
-        showBirthdayScreenButton.setTitle("Show birthday screen", for: .normal)
-        view.addSubview(showBirthdayScreenButton)
-        showBirthdayScreenButton.layout { (builder) in
-            builder.height == Constants.buttonHeight
-            builder.leading == view.leadingAnchor + Constants.offset
-            builder.trailing == view.trailingAnchor - Constants.offset
-            builder.bottom == view.safeAreaLayoutGuide.bottomAnchor -
-                Constants.offset
-        }
-        showBirthdayScreenButton.addAction(.init(handler: { _ in
-            self.onBirthdayScreenButtonTap()
-        }), for: .touchUpInside)
-    }
-
-    func setupUI() {
-        let label = makeTitleLabel()
-        let nameTextField = makeTextField(upperView: label)
-        let birthdayPicker = makeBirthdayPicker(upperView: nameTextField)
-        setupPhotoImageView(upperView: birthdayPicker)
-        setupBirthdayScreenButton()
-    }
 
     private func onBirthdayScreenButtonTap() {
 
@@ -241,6 +130,114 @@ private extension HomeViewController {
     }
 }
 
+// MARK: - UI Setup
+
+private extension HomeViewController {
+
+    func makeTitleLabel() -> UILabel {
+        let label = UILabel()
+        label.text = "Baby monitor"
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 25, weight: .bold)
+
+        view.addSubview(label)
+        label.layout {
+            $0.centerX == view.centerXAnchor
+            $0.top == view.topAnchor + (Constants.offset + UIApplication.topSafeArea)
+        }
+        return label
+    }
+
+    func makeTextField(upperView: UIView) -> UITextField {
+        nameTextField.placeholder = "Enter your name"
+        nameTextField.textAlignment = .center
+        nameTextField.textColor = .white
+        if !name.isEmpty {
+            nameTextField.text = name
+        }
+        nameTextField.autocorrectionType = .no
+
+        view.addSubview(nameTextField)
+        nameTextField.layout {
+            $0.centerX == view.centerXAnchor
+            $0.top == upperView.bottomAnchor + Constants.doubleOffset * 2
+        }
+        nameTextField.returnKeyType = .done
+        nameTextField.delegate = self
+        return nameTextField
+    }
+
+    func makeBirthdayPicker(upperView: UIView) -> UIDatePicker {
+        let birthdayPicker = UIDatePicker()
+        birthdayPicker.datePickerMode = .date
+        birthdayPicker.maximumDate = Date()
+        birthdayPicker.minimumDate = Date() - Const.secInMaxAgeYears
+        birthdayPicker.preferredDatePickerStyle = .compact
+
+        if ageInMonths != 0 {
+            birthdayPicker.setDate(
+                Date() - Double(ageInMonths) * Const.secInMon,
+                animated: false
+            )
+        }
+
+        view.addSubview(birthdayPicker)
+        birthdayPicker.layout {
+            $0.centerX == view.centerXAnchor
+            $0.top == upperView.bottomAnchor + Constants.offset
+        }
+        birthdayPicker.addAction(.init(handler: { _ in
+            self.onPickerDateSelected(picker: birthdayPicker)
+        }), for: .valueChanged)
+        return birthdayPicker
+    }
+
+    func onPickerDateSelected(picker: UIDatePicker) {
+        ageInMonths = Int((Date() - picker  .date) / Const.secInMon)
+    }
+
+    func setupPhotoImageView(upperView: UIView) {
+        let type = controller.getRandomColor()
+        photoImageView = ViewFactory.makePhotoImageView(
+            image: UIImage(named: "\(type)FaceIcon"),
+            upperView: upperView,
+            parentView: view,
+            size: Const.imageSize,
+            offset: Constants.tripleOffset
+        )
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        photoImageView.isUserInteractionEnabled = true
+        photoImageView.addGestureRecognizer(tap)
+
+        if let childPhoto = controller.getPhoto() {
+            photoImageView.image = childPhoto
+        }
+    }
+
+    func setupBirthdayScreenButton() {
+        showBirthdayScreenButton.setTitle("Show birthday screen", for: .normal)
+        view.addSubview(showBirthdayScreenButton)
+        showBirthdayScreenButton.layout {
+            $0.height == Const.buttonHeight
+            $0.leading == view.leadingAnchor + Constants.offset
+            $0.trailing == view.trailingAnchor - Constants.offset
+            $0.bottom == view.safeAreaLayoutGuide.bottomAnchor -
+                Constants.offset
+        }
+        showBirthdayScreenButton.addAction(.init(handler: { _ in
+            self.onBirthdayScreenButtonTap()
+        }), for: .touchUpInside)
+    }
+
+    func setupUI() {
+        let label = makeTitleLabel()
+        let nameTextField = makeTextField(upperView: label)
+        let birthdayPicker = makeBirthdayPicker(upperView: nameTextField)
+        setupPhotoImageView(upperView: birthdayPicker)
+        setupBirthdayScreenButton()
+    }
+}
+
 // MARK: - HomeView
 
 extension HomeViewController: HomeView {
@@ -271,7 +268,7 @@ extension HomeViewController: UITextFieldDelegate {
             && !(newText.last?.isWhitespace == true
                     && text.last?.isWhitespace == true)
             && newText.allSatisfy { $0.isLetter || $0.isWhitespace }
-            && newText.count <= Constants.maxNameLen
+            && newText.count <= Const.maxNameLen
         let shouldChange =
             newText.isEmpty
             || newText.count < text.count

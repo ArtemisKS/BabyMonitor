@@ -16,25 +16,16 @@ protocol BirthdayScreenView: AnyObject {
 
 final class BirthdayScreenViewController: UIViewController {
 
-    enum Constants {
-        static let offset: CGFloat = 16
-        static let doubleOffset: CGFloat = offset * 2
-        static let tripleOffset: CGFloat = offset * 3
-        static let shareButtonWidth: CGFloat = 182
-    }
-
     private let controller: BirthdayScreenControlling
 
     private var photoImageView: UIImageView!
     private var imagePicker: ImagePicker!
+    private let cameraButton = UIButton(type: .system)
+    private var shareButton: UIButton!
 
     private lazy var imageType: String = {
         controller.getRandomColor()
     }()
-
-    private var isModelX: Bool {
-        UIApplication.topSafeArea > 20
-    }
 
     init(controller: BirthdayScreenControlling) {
         self.controller = controller
@@ -79,12 +70,75 @@ final class BirthdayScreenViewController: UIViewController {
         navigationItem.leftBarButtonItem = barButton
     }
 
-    private func setupUI(childData: ChildData) {
+    @objc private func presentImagePicker() {
+        imagePicker.present(from: view)
+    }
 
-        for subview in view.subviews {
-            subview.removeFromSuperview()
+    private func shareImage() {
+        guard photoImageView.image != nil,
+              controller.didPickPhoto else {
+            view.makeToast("You've got no photo to share", duration: 1.5)
+            return
         }
 
+        func conductShareImage() {
+            let viewScreenshot = view.makeScreenshot()
+
+            let imageToShare = [viewScreenshot]
+            let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = view // so that iPads won't crash
+            activityViewController.completionWithItemsHandler = { (activityType: UIActivity.ActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
+                var style = ToastStyle()
+                if let error = error {
+                    style.backgroundColor = .primaryRed
+                    self.view.makeToast(
+                        error.localizedDescription,
+                        duration: 2,
+                        title: "Error occured",
+                        style: style
+                    )
+                } else if !completed {
+                    return
+                }
+                style.backgroundColor = .systemGreen
+                self.view.makeToast(
+                    "Image shared successfully",
+                    duration: 2,
+                    style: style
+                )
+            }
+
+            present(activityViewController, animated: true) { [weak self] in
+                self?.setupScreen(forScreenshot: false)
+            }
+        }
+
+        setupScreen(forScreenshot: true) {
+            conductShareImage()
+        }
+    }
+
+    private func setupScreen(forScreenshot: Bool, completion: (() -> Void)? = nil) {
+
+        func animation() {
+            let alpha: CGFloat = forScreenshot ? 0 : 1
+            cameraButton.alpha = alpha
+            shareButton.alpha = alpha
+        }
+
+        UIView.animate(withDuration: 0.25) {
+            animation()
+        } completion: { _ in
+            completion?()
+        }
+    }
+}
+
+// MARK: - UI Setup
+
+private extension BirthdayScreenViewController {
+
+    func setupPhotoImageView(image: UIImage?) -> CGFloat {
         let screenBounds = UIScreen.main.bounds
 
         let photoSizeCoef: CGFloat = isModelX ? 1.59 : 1.73
@@ -93,24 +147,28 @@ final class BirthdayScreenViewController: UIViewController {
         let photoOffset = screenBounds.height / photoOffsetCoef
 
         photoImageView = ViewFactory.makePhotoImageView(
-            image: childData.image,
+            image: image,
             upperView: view,
             parentView: view,
             size: photoSize,
             offset: photoOffset
         )
+        return photoSize
+    }
 
+    func setupBackgroundViewImage() {
         let backgroundImageView = UIImageView(image: getBackgroundImage())
         backgroundImageView.contentMode = .scaleAspectFill
         view.addSubview(backgroundImageView)
-        backgroundImageView.layout { (builder) in
-            builder.top == view.topAnchor
-            builder.trailing == view.trailingAnchor
-            builder.bottom == view.bottomAnchor
-            builder.leading == view.leadingAnchor
+        backgroundImageView.layout {
+            $0.top == view.topAnchor
+            $0.trailing == view.trailingAnchor
+            $0.bottom == view.bottomAnchor
+            $0.leading == view.leadingAnchor
         }
+    }
 
-        let cameraButton = UIButton(type: .system)
+    func setupCameraButton(photoSize: CGFloat) {
         cameraButton.setImage(
             getCameraImage()?.withRenderingMode(.alwaysOriginal),
             for: .normal
@@ -119,144 +177,52 @@ final class BirthdayScreenViewController: UIViewController {
         view.addSubview(cameraButton)
         let photoRadius = photoSize / 2
         let offset = photoRadius - (sqrt(2) / 2) * photoRadius - 1.5
-        cameraButton.layout { (builder) in
-            builder.width == Constants.doubleOffset
-            builder.height == Constants.doubleOffset
-            builder.centerY == photoImageView.topAnchor + offset
-            builder.centerX == photoImageView.trailingAnchor - offset
+        cameraButton.layout {
+            $0.width == Constants.doubleOffset
+            $0.height == Constants.doubleOffset
+            $0.centerY == photoImageView.topAnchor + offset
+            $0.centerX == photoImageView.trailingAnchor - offset
         }
         cameraButton.addTarget(self, action: #selector(presentImagePicker), for: .touchUpInside)
+    }
 
-        let nameLabel = UILabel()
-        nameLabel.text = "Today \(childData.name) is".uppercased()
-        nameLabel.numberOfLines = 0
-        nameLabel.font = .systemFont(ofSize: 25, weight: .semibold)
-        nameLabel.textColor = .customBlack
-        nameLabel.textAlignment = .center
+    func makeUpperStackView(childData: ChildData) -> UIStackView {
 
-        let actualAge = makeAge(from: childData.ageInMonths)
-        let numberImageView = UIImageView(image: UIImage(named: "\(actualAge)icon"))
-        numberImageView.contentMode = .scaleAspectFit
+        ViewFactory.makeUpperStackView(
+            childData: childData,
+            parentView: view,
+            isModelX: isModelX,
+            makeAge: makeAge(from:),
+            makeAgeText: makeAgeText(olderThanYear:age:)
+        )
+    }
 
-        let numberImageSize: CGFloat = isModelX ? 132 : 104
-        let swirlImageSize: CGFloat = isModelX ? 62 : 50
-
-        numberImageView.layout { (builder) in
-            builder.height == (
-                actualAge < 10 ?
-                    numberImageSize :
-                    numberImageSize / 1.35
-            )
-            builder.width == (
-                actualAge < 10 ?
-                    numberImageSize / 1.35 :
-                    numberImageSize
-            )
-        }
-
-        let leftSwirlImageView = UIImageView(image: UIImage(named: "leftSwirl"))
-        leftSwirlImageView.contentMode = .scaleAspectFit
-        leftSwirlImageView.layout { (builder) in
-            builder.width == swirlImageSize
-        }
-
-        let rightSwirlImageView = UIImageView(image: UIImage(named: "rightSwirl"))
-        rightSwirlImageView.contentMode = .scaleAspectFit
-        rightSwirlImageView.layout { (builder) in
-            builder.width == swirlImageSize
-        }
-
-        let imagesStackView = UIStackView(arrangedSubviews: [leftSwirlImageView, numberImageView, rightSwirlImageView])
-        imagesStackView.axis = .horizontal
-        imagesStackView.spacing = Constants.offset
-
-        let lowerLabel = UILabel()
-        lowerLabel.text = makeAgeText(
-            olderThanYear: actualAge != childData.ageInMonths,
-            age: actualAge
-        ).uppercased()
-        lowerLabel.numberOfLines = 0
-        lowerLabel.textColor = .customBlack
-        lowerLabel.font = .systemFont(ofSize: 25, weight: .semibold)
-        lowerLabel.textAlignment = .center
-
-        let upperStackView = UIStackView(arrangedSubviews: [nameLabel, imagesStackView, lowerLabel])
-        upperStackView.axis = .vertical
-        upperStackView.spacing = Constants.offset / 2
-
-        view.addSubview(upperStackView)
-        upperStackView.layout { (builder) in
-            builder.centerX == view.centerXAnchor
-        }
-
-        let shareImageView = UIImageView(image: UIImage(named: "shareArrowIcon"))
-        shareImageView.contentMode = .scaleAspectFit
-
-        shareImageView.layout { (builder) in
-            builder.width == Constants.offset * 1.5
-        }
-
-        let shareLabel = UILabel()
-        shareLabel.text = "Share the news"
-        shareLabel.textColor = .customRed
-        shareLabel.font = .systemFont(ofSize: 18)
-
-        let shareStackView = UIStackView(arrangedSubviews: [shareLabel, shareImageView])
-        shareStackView.spacing = Constants.offset / 2.5
-        shareStackView.axis = .horizontal
-
-        let shareBackImageView = UIImageView(image: UIImage(named: "shareButtonBack"))
-        shareBackImageView.contentMode = .scaleAspectFit
-        shareBackImageView.isUserInteractionEnabled = false
-
-        let shareBackView = UIView()
-        shareBackView.isUserInteractionEnabled = false
-        for subview in [shareBackImageView, shareStackView] {
-            shareBackView.addSubview(subview)
-        }
-
-        shareBackImageView.layout { (builder) in
-            builder.width == Constants.shareButtonWidth
-            builder.height == Constants.tripleOffset
-        }
-
-        shareBackView.layout { (builder) in
-            builder.leading == shareBackImageView.leadingAnchor
-            builder.top == shareBackImageView.topAnchor
-            builder.trailing == shareBackImageView.trailingAnchor
-            builder.bottom == shareBackImageView.bottomAnchor
-        }
-
-        shareStackView.layout { (builder) in
-            builder.leading == shareBackView.leadingAnchor + Constants.offset
-            builder.top == shareBackView.topAnchor
-            builder.bottom == shareBackView.bottomAnchor - Constants.offset / 4
-        }
-
-        let shareButton = UIButton(type: .custom)
-        shareButton.addSubview(shareBackView)
-
-        view.addSubview(shareButton)
-        let shareVerticalOffset = isModelX ?
-            Constants.doubleOffset : Constants.offset
-        shareButton.layout { (builder) in
-            builder.centerX == view.centerXAnchor
-            builder.leading == shareBackView.leadingAnchor
-            builder.top == shareBackView.topAnchor
-            builder.trailing == shareBackView.trailingAnchor
-            builder.bottom == shareBackView.bottomAnchor
-            builder.bottom == photoImageView.topAnchor - shareVerticalOffset * 1.5
-            builder.top == upperStackView.bottomAnchor + shareVerticalOffset
-        }
-
+    func setupShareButton(upperView: UIView) {
+        shareButton = ViewFactory.makeShareButton(
+            parentView: view,
+            upperView: upperView,
+            lowerView: photoImageView,
+            isModelX: isModelX)
         shareButton.addAction(.init(handler: { [weak self] _ in
             self?.shareImage()
         }), for: .touchUpInside)
-
     }
 
-    @objc private func presentImagePicker() {
-        imagePicker.present(from: view)
+    func setupUI(childData: ChildData) {
+
+        for subview in view.subviews {
+            subview.removeFromSuperview()
+        }
+
+        let photoSize = setupPhotoImageView(image: childData.image)
+
+        setupBackgroundViewImage()
+
+        setupCameraButton(photoSize: photoSize)
+
+        let upperStackView = makeUpperStackView(childData: childData)
+
+        setupShareButton(upperView: upperStackView)
     }
 
     private func makeAge(from ageInMonths: Int) -> Int {
@@ -280,39 +246,6 @@ final class BirthdayScreenViewController: UIViewController {
 
     private func getCameraImage() -> UIImage? {
         UIImage(named: "\(imageType)Camera")
-    }
-
-    private func shareImage() {
-        guard let image = photoImageView.image, controller.didPickPhoto else {
-            view.makeToast("You've got no photo to share", duration: 1.5)
-            return
-        }
-
-        let imageToShare = [image]
-        let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = view // so that iPads won't crash
-        activityViewController.completionWithItemsHandler = { (activityType: UIActivity.ActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
-            var style = ToastStyle()
-            if let error = error {
-                style.backgroundColor = .primaryRed
-                self.view.makeToast(
-                    error.localizedDescription,
-                    duration: 2,
-                    title: "Error occured",
-                    style: style
-                )
-            } else if !completed {
-                return
-            }
-            style.backgroundColor = .systemGreen
-            self.view.makeToast(
-                "Image shared successfully",
-                duration: 2,
-                style: style
-            )
-        }
-
-        present(activityViewController, animated: true)
     }
 }
 
