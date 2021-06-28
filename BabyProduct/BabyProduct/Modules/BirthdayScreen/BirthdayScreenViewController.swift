@@ -62,7 +62,13 @@ final class BirthdayScreenViewController: UIViewController {
                 )
             )
         backButton.setImage(image, for: .normal)
-        backButton.frame = .init(origin: .zero, size: CGSize(width: Constants.doubleOffset, height: Constants.doubleOffset))
+        backButton.frame = .init(
+            origin: .zero,
+            size: CGSize(
+                width: Constants.doubleOffset,
+                height: Constants.doubleOffset
+            )
+        )
         backButton.addAction(.init(handler: { [weak self] _ in
             self?.dismiss(animated: true)
         }), for: .touchUpInside)
@@ -85,9 +91,12 @@ final class BirthdayScreenViewController: UIViewController {
             let viewScreenshot = view.makeScreenshot()
 
             let imageToShare = [viewScreenshot]
-            let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
+            let activityViewController = UIActivityViewController(
+                activityItems: imageToShare,
+                applicationActivities: nil
+            )
             activityViewController.popoverPresentationController?.sourceView = view // so that iPads won't crash
-            activityViewController.completionWithItemsHandler = { (activityType: UIActivity.ActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
+            activityViewController.completionWithItemsHandler = { (_, completed, _, error) in
                 var style = ToastStyle()
                 if let error = error {
                     style.backgroundColor = .primaryRed

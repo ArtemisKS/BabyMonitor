@@ -44,7 +44,7 @@ final class HomeViewController: BaseViewController {
     @Published private var ageInMonths = 0
 
     private var cancellable: AnyCancellable?
-    
+
     private var validToSubmit: AnyPublisher<Bool, Never> {
         return Publishers.CombineLatest($name, $ageInMonths)
             .map { name, age in
@@ -52,7 +52,7 @@ final class HomeViewController: BaseViewController {
                     age >= Const.minAgeMonths && age <= Const.maxAgeMonths
             }.eraseToAnyPublisher()
     }
-    
+
     init(controller: HomeControlling) {
         self.controller = controller
         super.init(nibName: nil, bundle: nil)

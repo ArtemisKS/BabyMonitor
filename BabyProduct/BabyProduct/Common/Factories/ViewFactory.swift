@@ -61,7 +61,26 @@ enum ViewFactory {
         isModelX: Bool
     ) -> UIButton {
 
+        let shareBackView = makeShareBackView()
+
         let shareButton = UIButton(type: .custom)
+        shareButton.addSubview(shareBackView)
+        parentView.addSubview(shareButton)
+        let shareVerticalOffset = isModelX ?
+            Constants.doubleOffset : Constants.offset
+        shareButton.layout {
+            $0.centerX == parentView.centerXAnchor
+            $0.leading == shareBackView.leadingAnchor
+            $0.top == shareBackView.topAnchor
+            $0.trailing == shareBackView.trailingAnchor
+            $0.bottom == shareBackView.bottomAnchor
+            $0.bottom == lowerView.topAnchor - shareVerticalOffset * 1.5
+            $0.top == upperView.bottomAnchor + shareVerticalOffset
+        }
+        return shareButton
+    }
+
+    private static func makeShareBackView() -> UIView {
 
         let shareImageView = UIImageView(image: UIImage(named: "shareArrowIcon"))
         shareImageView.contentMode = .scaleAspectFit
@@ -105,22 +124,7 @@ enum ViewFactory {
             $0.top == shareBackView.topAnchor
             $0.bottom == shareBackView.bottomAnchor - Constants.offset / 4
         }
-
-        shareButton.addSubview(shareBackView)
-
-        parentView.addSubview(shareButton)
-        let shareVerticalOffset = isModelX ?
-            Constants.doubleOffset : Constants.offset
-        shareButton.layout {
-            $0.centerX == parentView.centerXAnchor
-            $0.leading == shareBackView.leadingAnchor
-            $0.top == shareBackView.topAnchor
-            $0.trailing == shareBackView.trailingAnchor
-            $0.bottom == shareBackView.bottomAnchor
-            $0.bottom == lowerView.topAnchor - shareVerticalOffset * 1.5
-            $0.top == upperView.bottomAnchor + shareVerticalOffset
-        }
-        return shareButton
+        return shareBackView
     }
 
     static func makeUpperStackView(
@@ -140,19 +144,20 @@ enum ViewFactory {
 
         let numberImageSize: CGFloat = isModelX ? 132 : 104
 
+        let ageThresholder = 10
         numberImageView.layout {
-            $0.height == (actualAge < 10 ? numberImageSize : numberImageSize / 1.35)
-            $0.width == (actualAge < 10 ? numberImageSize / 1.35 : numberImageSize)
+            $0.height == (actualAge < ageThresholder ? numberImageSize : numberImageSize / 1.35)
+            $0.width == (actualAge < ageThresholder ? numberImageSize / 1.35 : numberImageSize)
         }
 
         let swirlImageSize: CGFloat = isModelX ? 62 : 50
 
-        let leftSwirlImageView = ViewFactory.makeSwirlImageView(
+        let leftSwirlImageView = makeSwirlImageView(
             left: true,
             size: swirlImageSize
         )
 
-        let rightSwirlImageView = ViewFactory.makeSwirlImageView(
+        let rightSwirlImageView = makeSwirlImageView(
             left: false,
             size: swirlImageSize
         )

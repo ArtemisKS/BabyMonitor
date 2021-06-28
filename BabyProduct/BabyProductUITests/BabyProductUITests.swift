@@ -7,6 +7,8 @@
 
 import XCTest
 
+// swiftlint:disable all
+
 class BabyProductUITests: XCTestCase {
 
     override func setUpWithError() throws {
