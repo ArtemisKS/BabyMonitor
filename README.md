@@ -16,9 +16,9 @@ To get this app up and running
 
 ## Screencasts
 
-<img src="/images/NearbyPlaces1.gif" height="853" width="394"> <img src="/images/NearbyPlaces2.gif" height="853" width="394">
+<img src="/images/BabyMonitor.png" height="853" width="394"> <img src="/images/BabyMonitor1.png" height="853" width="394">
 
-<img src="/images/NearbyPlaces3.gif" height="853" width="394"> <img src="/images/NearbyPlaces4.gif" height="853" width="394">
+<img src="/images/BabyMonitor2.png" height="853" width="394"> <img src="/images/BabyMonitor3.png" height="853" width="394">
 
 ---
 
